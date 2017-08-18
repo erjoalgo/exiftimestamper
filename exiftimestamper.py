@@ -7,10 +7,18 @@ import sys, os, re, time, functools
 
 
 def update_timestamp ( fn ):
-    TIMESTAMP = "EXIF DateTimeOriginal"
+    TIMESTAMP_TAGS = ["EXIF DateTimeOriginal",
+                      "Image DateTime"]
     with open(fn, 'rb') as fh:
         tags = exifread.process_file(fh)
-        stamp = tags[TIMESTAMP]
+        for TAG in TIMESTAMP_TAGS:
+            stamp = tags.get(TAG)
+            if stamp:
+                break
+        else:
+            raise Exception("no date tag in {}: {}"
+                            .format(fn, tags.keys()))
+
         t = time.mktime(time.strptime(str(stamp), '%Y:%m:%d %H:%M:%S'))
         os.utime(fn, (t,t))
         print ("updated {} to {}".format(fn, stamp))
