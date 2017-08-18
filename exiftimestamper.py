@@ -26,6 +26,7 @@ def update_timestamp ( fn ):
 
 
 def walk_top ( top ):
+    print ("walking over '{}'".format(top), file=sys.stderr)
     for (dirpath, dirnames, filenames) in os.walk(top):
         for base in filter(functools.partial(re.match, "(?i).*jpe?g$"),
                            filenames):
