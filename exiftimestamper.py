@@ -4,7 +4,7 @@
 
 import exifread
 import sys, os, re, time, functools
-
+import argparse
 
 def update_timestamp ( fn ):
     TIMESTAMP_TAGS = ["EXIF DateTimeOriginal",
@@ -36,11 +36,11 @@ def walk_top ( top ):
                        .format(fn, repr(ex)))
                 
 def main ():
-    if len(sys.argv)<2:
-        print ("usage: exif-jpeg-timestamper.py PHOTOS-DIRECTORY")
-        exit(1)
-
-    top = sys.argv[1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("photos-directory",
+                        help="top-level directory containing images")
+    args = vars(parser.parse_args())
+    top = args["photos-directory"]
     walk_top(top)
 
 if __name__ == '__main__':
