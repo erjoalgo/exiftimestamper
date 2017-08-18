@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='exiftimestamper',
-    version='2016.11.27',
+    version='2017.08.18',
     author = "Ernesto Alfonso",
     author_email = "erjoalgo@gmail.com",
     # url='https://github.com/jrfonseca/gprof2dot',
