@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 # from win32file import CreateFile, SetFileTime, GetFileTime, CloseHandle 
 
 import exifread
@@ -33,7 +34,7 @@ def walk_top ( top ):
                 update_timestamp(fn)
             except Exception as ex:
                 print ("ERROR: unable to update {}'s timestamp: {}"
-                       .format(fn, repr(ex)))
+                .format(fn, repr(ex)), file=sys.stderr)
                 
 def main ():
     parser = argparse.ArgumentParser()
