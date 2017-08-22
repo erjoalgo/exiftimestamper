@@ -61,9 +61,12 @@ def walk_top ( media_directory, quiet, recursive ):
                     total+=1
                     stamp=time.strftime('%Y:%m:%d %H:%M:%S', t)
                     utime=time.mktime(t)
-                    os.utime(fn, (utime,utime))
-                    if not quiet:
-                        print ("updated {} to {}".format(fn, stamp))
+                    curr_mtime=os.path.getmtime(fn)
+                    if utime != curr_mtime:
+                        if not quiet:
+                            print ("updating {} to {}".format(fn, stamp))
+                        os.utime(fn, (utime,utime))
+
             except Exception as ex:
                 failed+=1
                 print ("ERROR: unable to update {}'s timestamp: {}"
