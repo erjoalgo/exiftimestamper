@@ -40,7 +40,8 @@ def media_timestamp(fn):
     else:
         return None
 
-def walk_top ( top, quiet ):
+def walk_top ( media_directory, quiet ):
+    top=media_directory
     print ("walking over '{}'".format(top), file=sys.stderr)
     failed=0
     total=0
@@ -67,16 +68,15 @@ def walk_top ( top, quiet ):
                 
 def main ():
     parser = argparse.ArgumentParser()
-    parser.add_argument("photos-directory",
+    parser.add_argument("media_directory",
                         help="top-level directory containing images")
     parser.add_argument("--quiet", "-q", action="store_true",
                         help="don't report success")
-    args = vars(parser.parse_args())
-    top = args["photos-directory"]
+    kwargs = vars(parser.parse_args())
     if subprocess.call(["which", "mediainfo"]) != 0:
         print ( "WARNING: mediainfo required for mp4 timestamp extraction" )
 
-    walk_top(top, quiet=args["quiet"])
+    walk_top(**kwargs)
 
 if __name__ == '__main__':
     main()
