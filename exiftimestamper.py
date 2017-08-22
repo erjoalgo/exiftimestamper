@@ -38,7 +38,6 @@ def media_timestamp(fn):
     elif re.match("(?i).*[.]mp4$", fn):
         return mp4_timestamp(fn)
     else:
-        print ( "none matched" )
         return None
 
 def walk_top ( top ):
