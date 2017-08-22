@@ -40,7 +40,7 @@ def media_timestamp(fn):
     else:
         return None
 
-def walk_top ( top ):
+def walk_top ( top, quiet ):
     print ("walking over '{}'".format(top), file=sys.stderr)
     for (dirpath, dirnames, filenames) in os.walk(top):
         for base in filenames:
@@ -51,7 +51,8 @@ def walk_top ( top ):
                     stamp=time.strftime('%Y:%m:%d %H:%M:%S', t)
                     utime=time.mktime(t)
                     os.utime(fn, (utime,utime))
-                    print ("updated {} to {}".format(fn, stamp))
+                    if not quiet:
+                        print ("updated {} to {}".format(fn, stamp))
             except Exception as ex:
                 print ("ERROR: unable to update {}'s timestamp: {}"
                 .format(fn, repr(ex)), file=sys.stderr)
@@ -60,12 +61,14 @@ def main ():
     parser = argparse.ArgumentParser()
     parser.add_argument("photos-directory",
                         help="top-level directory containing images")
+    parser.add_argument("--quiet", "-q", action="store_true",
+                        help="don't report success")
     args = vars(parser.parse_args())
     top = args["photos-directory"]
     if subprocess.call(["which", "mediainfo"]) != 0:
         print ( "WARNING: mediainfo required for mp4 timestamp extraction" )
 
-    walk_top(top)
+    walk_top(top, quiet=args["quiet"])
 
 if __name__ == '__main__':
     main()
