@@ -1,5 +1,6 @@
 #!/bin/bash -x
 
+test -e setup.py || exit ${LINENO}
 sudo rm -rf build  dist *.egg-info
 python setup.py sdist
 VERSION=$(python setup.py --version) || exit ${LINENO}
