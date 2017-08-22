@@ -42,20 +42,28 @@ def media_timestamp(fn):
 
 def walk_top ( top, quiet ):
     print ("walking over '{}'".format(top), file=sys.stderr)
+    failed=0
+    total=0
+
     for (dirpath, dirnames, filenames) in os.walk(top):
         for base in filenames:
             fn = os.path.join(dirpath, base)
             try:
                 t=media_timestamp(fn)
                 if t:
+                    total+=1
                     stamp=time.strftime('%Y:%m:%d %H:%M:%S', t)
                     utime=time.mktime(t)
                     os.utime(fn, (utime,utime))
                     if not quiet:
                         print ("updated {} to {}".format(fn, stamp))
             except Exception as ex:
+                failed+=1
                 print ("ERROR: unable to update {}'s timestamp: {}"
                 .format(fn, repr(ex)), file=sys.stderr)
+
+        print ("{}/{} errors"
+                .format(failed, total), file=sys.stderr)
                 
 def main ():
     parser = argparse.ArgumentParser()
