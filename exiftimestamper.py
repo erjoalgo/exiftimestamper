@@ -3,6 +3,7 @@
 from __future__ import print_function
 # from win32file import CreateFile, SetFileTime, GetFileTime, CloseHandle 
 
+from distutils.spawn import find_executable
 import subprocess
 import exifread
 import sys, os, re, time, functools
@@ -76,7 +77,7 @@ def main ():
     parser.add_argument("--recursive", "-r", action="store_true",
                         help="recurisve")
     kwargs = vars(parser.parse_args())
-    if subprocess.call(["which", "mediainfo"]) != 0:
+    if not find_executable("mediainfo"):
         print ( "WARNING: mediainfo required for mp4 timestamp extraction" )
 
     walk_top(**kwargs)
