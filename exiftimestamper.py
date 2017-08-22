@@ -40,13 +40,14 @@ def media_timestamp(fn):
     else:
         return None
 
-def walk_top ( media_directory, quiet ):
+def walk_top ( media_directory, quiet, recursive ):
     top=media_directory
     print ("walking over '{}'".format(top), file=sys.stderr)
     failed=0
     total=0
 
-    for (dirpath, dirnames, filenames) in os.walk(top):
+    for (dirpath, dirnames, filenames) in \
+        (os.walk(top) if recursive else ((top, [], os.listdir(top)), )):
         for base in filenames:
             fn = os.path.join(dirpath, base)
             try:
@@ -72,6 +73,8 @@ def main ():
                         help="top-level directory containing images")
     parser.add_argument("--quiet", "-q", action="store_true",
                         help="don't report success")
+    parser.add_argument("--recursive", "-r", action="store_true",
+                        help="recurisve")
     kwargs = vars(parser.parse_args())
     if subprocess.call(["which", "mediainfo"]) != 0:
         print ( "WARNING: mediainfo required for mp4 timestamp extraction" )
