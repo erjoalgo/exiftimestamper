@@ -11,6 +11,7 @@ gpg --detach-sign -a ${TARGZ} || exit ${LINENO}
 gpg --verify -a ${TARGZ}{.asc,} || exit ${LINENO}
 
 if ! command -v twine; then
+    echo "twine not available, installing it..."
     pip install --user twine
 fi
 
