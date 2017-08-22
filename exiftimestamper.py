@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
+
+from pkg_resources import get_distribution
+__version__ = get_distribution('exiftimestamper').version
+
 # from win32file import CreateFile, SetFileTime, GetFileTime, CloseHandle 
 
 from distutils.spawn import find_executable
@@ -76,6 +80,9 @@ def main ():
                         help="don't report success")
     parser.add_argument("--recursive", "-r", action="store_true",
                         help="recurisve")
+    parser.add_argument("--version", action="version",
+                        version=__version__)
+
     kwargs = vars(parser.parse_args())
     if not find_executable("mediainfo"):
         print ( "WARNING: mediainfo required for mp4 timestamp extraction" )
