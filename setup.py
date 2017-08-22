@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='exiftimestamper',
-    version="2017.8.21",
+    version="2017.8.22",
     author = "Ernesto Alfonso",
     author_email = "erjoalgo@gmail.com",
     url="https://github.com/erjoalgo/exiftimestamper",
