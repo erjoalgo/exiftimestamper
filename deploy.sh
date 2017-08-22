@@ -2,7 +2,7 @@
 
 sudo rm -rf build  dist *.egg-info
 python setup.py sdist
-VERSION=${1:-$(cat VERSION | head -1 | tr -d '\n')}
+VERSION=$(python setup.py --version) || exit ${LINENO}
 PROJECT_NAME=$(basename $(pwd))
 TARGZ=dist/${PROJECT_NAME}-${VERSION}.tar.gz
 test -e ${TARGZ} || exit ${LINENO}
