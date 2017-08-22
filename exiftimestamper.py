@@ -2,18 +2,16 @@
 
 from __future__ import print_function
 
-from pkg_resources import get_distribution
-__version__ = get_distribution('exiftimestamper').version
-
-# from win32file import CreateFile, SetFileTime, GetFileTime, CloseHandle 
-
 from distutils.spawn import find_executable
 import subprocess
 import exifread
 import sys, os, re, time, functools
 import argparse
 
-def exif_timestamp ( fn ):
+from pkg_resources import get_distribution
+__version__ = get_distribution('exiftimestamper').version
+
+def exif_timestamp(fn):
     TIMESTAMP_TAGS = ["EXIF DateTimeOriginal",
                       "Image DateTime"]
     with open(fn, 'rb') as fh:
@@ -33,7 +31,7 @@ def mp4_timestamp(fn):
     # mediainfo --Inform="General;%Encoded_Date%" VID_20170811_221350395-i-did-it-my-way-ryong-il-kiyul.mp4
     # UTC 2017-08-11 14:19:13
 
-    stamp=subprocess.check_output(["mediainfo", "--Inform=General;%Encoded_Date%", fn])
+    stamp = subprocess.check_output(["mediainfo", "--Inform=General;%Encoded_Date%", fn])
     t = time.strptime(str(stamp.strip()), '%Z %Y-%m-%d %H:%M:%S')
     return t
 
@@ -45,37 +43,37 @@ def media_timestamp(fn):
     else:
         return None
 
-def walk_top ( media_directory, quiet, recursive ):
-    top=media_directory
+def walk_top(media_directory, quiet, recursive):
+    top = media_directory
     print ("walking over '{}'".format(top), file=sys.stderr)
-    failed=0
-    total=0
+    failed = 0
+    total = 0
 
     for (dirpath, dirnames, filenames) in \
-        (os.walk(top) if recursive else ((top, [], os.listdir(top)), )):
+        os.walk(top) if recursive else ((top, [], os.listdir(top)), ):
         for base in filenames:
             fn = os.path.join(dirpath, base)
             try:
-                t=media_timestamp(fn)
+                t = media_timestamp(fn)
                 if t:
-                    total+=1
-                    stamp=time.strftime('%Y:%m:%d %H:%M:%S', t)
-                    utime=time.mktime(t)
-                    curr_mtime=os.path.getmtime(fn)
+                    total += 1
+                    stamp = time.strftime('%Y:%m:%d %H:%M:%S', t)
+                    utime = time.mktime(t)
+                    curr_mtime = os.path.getmtime(fn)
                     if utime != curr_mtime:
                         if not quiet:
                             print ("updating {} to {}".format(fn, stamp))
-                        os.utime(fn, (utime,utime))
+                        os.utime(fn, (utime, utime))
 
             except Exception as ex:
-                failed+=1
+                failed += 1
                 print ("ERROR: unable to update {}'s timestamp: {}"
-                .format(fn, repr(ex)), file=sys.stderr)
+                       .format(fn, repr(ex)), file=sys.stderr)
 
         print ("{}/{} errors"
-                .format(failed, total), file=sys.stderr)
-                
-def main ():
+               .format(failed, total), file=sys.stderr)
+
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("media_directory",
                         help="top-level directory containing images")
@@ -88,7 +86,7 @@ def main ():
 
     kwargs = vars(parser.parse_args())
     if not find_executable("mediainfo"):
-        print ( "WARNING: mediainfo required for mp4 timestamp extraction" )
+        print ("WARNING: mediainfo required for mp4 timestamp extraction")
 
     walk_top(**kwargs)
 
