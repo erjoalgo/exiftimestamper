@@ -37,8 +37,15 @@ def mp4_timestamp(fn):
 
     stamp = subprocess.check_output(
         ["mediainfo", "--Inform=General;%Encoded_Date%", fn], text=True)
-    t = time.strptime(stamp.strip(), '%Z %Y-%m-%d %H:%M:%S')
-    return t
+    stamp = stamp.strip()
+    # older mediainfo: 'UTC 2017-08-11 14:19:13'
+    # newer mediainfo: '2017-08-11 14:19:13 UTC'
+    for fmt in ('%Z %Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M:%S %Z'):
+        try:
+            return time.strptime(stamp, fmt)
+        except ValueError:
+            pass
+    raise ValueError("unrecognized mediainfo date in {}: {!r}".format(fn, stamp))
 
 def media_timestamp(fn):
     if re.match("(?i).*[.]jpe?g$", fn):
