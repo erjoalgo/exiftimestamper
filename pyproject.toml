@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exiftimestamper"
+version = "2017.8.22.2"
+dependencies = [
+  "exifread",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Ernesto Alfonso", email = "erjoalgo@gmail.com"},
+]
+description = "A command-line tool to update jpeg file timestamps based on their 'EXIF DateTimeOriginal' metadata tag"
+readme = "README.md"
+license = "LGPL-3.0-or-later"
+keywords = ["exif", "jpeg", "mp4", "timestamp", "photos"]
+
+[project.urls]
+Homepage = "https://github.com/erjoalgo/exiftimestamper"
+Repository = "https://github.com/erjoalgo/exiftimestamper"
+"Bug Tracker" = "https://github.com/erjoalgo/exiftimestamper/issues"
+
+[project.scripts]
+exiftimestamper = "exiftimestamper:main"
+
+[tool.setuptools]
+py-modules = ["exiftimestamper"]
