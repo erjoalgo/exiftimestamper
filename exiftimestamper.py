@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import calendar
 import importlib.metadata
 import shutil
 import subprocess
@@ -29,7 +30,8 @@ def exif_timestamp(fn):
                             .format(fn, tags.keys()))
 
         t = time.strptime(str(stamp), '%Y:%m:%d %H:%M:%S')
-        return t
+        # EXIF dates are in the camera's local time
+        return time.mktime(t)
 
 def mp4_timestamp(fn):
     # mediainfo --Inform="General;%Encoded_Date%" VID_20170811_221350395-i-did-it-my-way-ryong-il-kiyul.mp4
@@ -42,7 +44,8 @@ def mp4_timestamp(fn):
     # newer mediainfo: '2017-08-11 14:19:13 UTC'
     for fmt in ('%Z %Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M:%S %Z'):
         try:
-            return time.strptime(stamp, fmt)
+            # the encoded date is in UTC
+            return calendar.timegm(time.strptime(stamp, fmt))
         except ValueError:
             pass
     raise ValueError("unrecognized mediainfo date in {}: {!r}".format(fn, stamp))
@@ -66,11 +69,11 @@ def walk_top(media_directory, quiet, recursive):
         for base in filenames:
             fn = os.path.join(dirpath, base)
             try:
-                t = media_timestamp(fn)
-                if t:
+                utime = media_timestamp(fn)
+                if utime is not None:
                     total += 1
-                    stamp = time.strftime('%Y:%m:%d %H:%M:%S', t)
-                    utime = time.mktime(t)
+                    stamp = time.strftime('%Y:%m:%d %H:%M:%S',
+                                          time.localtime(utime))
                     curr_mtime = os.path.getmtime(fn)
                     if utime != curr_mtime:
                         if not quiet:
