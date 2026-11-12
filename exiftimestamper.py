@@ -96,7 +96,7 @@ def main():
     parser.add_argument("--quiet", "-q", action="store_true",
                         help="don't report success")
     parser.add_argument("--recursive", "-r", action="store_true",
-                        help="recurisve")
+                        help="also process subdirectories")
     parser.add_argument("--version", action="version",
                         version=__version__)
 
