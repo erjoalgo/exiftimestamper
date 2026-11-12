@@ -35,8 +35,9 @@ def mp4_timestamp(fn):
     # mediainfo --Inform="General;%Encoded_Date%" VID_20170811_221350395-i-did-it-my-way-ryong-il-kiyul.mp4
     # UTC 2017-08-11 14:19:13
 
-    stamp = subprocess.check_output(["mediainfo", "--Inform=General;%Encoded_Date%", fn])
-    t = time.strptime(str(stamp.strip()), '%Z %Y-%m-%d %H:%M:%S')
+    stamp = subprocess.check_output(
+        ["mediainfo", "--Inform=General;%Encoded_Date%", fn], text=True)
+    t = time.strptime(stamp.strip(), '%Z %Y-%m-%d %H:%M:%S')
     return t
 
 def media_timestamp(fn):
