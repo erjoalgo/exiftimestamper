@@ -1,2 +1,4 @@
 exiftimestamper.egg-info
 dist
+build
+__pycache__
