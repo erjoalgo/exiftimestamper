@@ -2,8 +2,8 @@
 
 from __future__ import print_function
 
-from distutils.spawn import find_executable
 import importlib.metadata
+import shutil
 import subprocess
 import exifread
 import sys, os, re, time, functools
@@ -89,7 +89,7 @@ def main():
                         version=__version__)
 
     kwargs = vars(parser.parse_args())
-    if not find_executable("mediainfo"):
+    if not shutil.which("mediainfo"):
         print ("WARNING: mediainfo required for mp4 timestamp extraction")
 
     walk_top(**kwargs)
