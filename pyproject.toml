@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "exiftimestamper"
-version = "2017.8.22.2"
+version = "2026.11.11.0"
 dependencies = [
   "exifread",
 ]
