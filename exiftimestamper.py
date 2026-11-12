@@ -86,8 +86,8 @@ def walk_top(media_directory, quiet, recursive):
                 print ("ERROR: unable to update {}'s timestamp: {}"
                        .format(fn, repr(ex)), file=sys.stderr)
 
-        print ("{}/{} errors"
-               .format(failed, total), file=sys.stderr)
+    print ("{}/{} errors"
+           .format(failed, total), file=sys.stderr)
 
 def main():
     parser = argparse.ArgumentParser()
