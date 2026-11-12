@@ -12,7 +12,7 @@ requires-python = ">=3.8"
 authors = [
   {name = "Ernesto Alfonso", email = "erjoalgo@gmail.com"},
 ]
-description = "A command-line tool to update jpeg file timestamps based on their 'EXIF DateTimeOriginal' metadata tag"
+description = "Set photo and video files' modified times to when they were taken, from EXIF data or mediainfo"
 readme = "README.md"
 license = "LGPL-3.0-or-later"
 keywords = ["exif", "jpeg", "mp4", "timestamp", "photos"]
