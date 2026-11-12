@@ -3,13 +3,17 @@
 from __future__ import print_function
 
 from distutils.spawn import find_executable
+import importlib.metadata
 import subprocess
 import exifread
 import sys, os, re, time, functools
 import argparse
 
-from pkg_resources import get_distribution
-__version__ = get_distribution('exiftimestamper').version
+try:
+    __version__ = importlib.metadata.version("exiftimestamper")
+except importlib.metadata.PackageNotFoundError:
+    # running from the source tree, not installed
+    __version__ = "unknown"
 
 def exif_timestamp(fn):
     TIMESTAMP_TAGS = ["EXIF DateTimeOriginal",
