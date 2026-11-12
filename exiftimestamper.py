@@ -81,6 +81,7 @@ def walk_top(media_directory, quiet, recursive):
                         os.utime(fn, (utime, utime))
 
             except Exception as ex:
+                total += 1
                 failed += 1
                 print ("ERROR: unable to update {}'s timestamp: {}"
                        .format(fn, repr(ex)), file=sys.stderr)
